@@ -1,0 +1,163 @@
+<svg width="736" height="588" viewBox="0 0 552 441" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="translate(31.145679320981515,291.76401269990464) scale(0.6099737963117755)">
+<title>G</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-256 816.55,-256 816.55,4 -4,4"/>
+<!-- Matplotlib -->
+<g id="node1" class="node">
+<title>Matplotlib</title>
+<polygon fill="none" stroke="black" points="420.07,-252 344.96,-252 344.96,-216 420.07,-216 420.07,-252"/>
+<text text-anchor="middle" x="382.51" y="-229.8" font-family="Times,serif" font-size="14.00">Matplotlib</text>
+</g>
+<!-- Numpy -->
+<g id="node2" class="node">
+<title>Numpy</title>
+<ellipse fill="none" stroke="black" cx="177.51" cy="-162" rx="40.55" ry="18"/>
+<text text-anchor="middle" x="177.51" y="-157.8" font-family="Times,serif" font-size="14.00">NumPy</text>
+</g>
+<!-- Matplotlib&#45;&gt;Numpy -->
+<g id="edge1" class="edge">
+<title>Matplotlib-&gt;Numpy</title>
+<path fill="none" stroke="black" d="M344.91,-220.16C309.5,-208.07 256.55,-189.99 219.71,-177.41"/>
+<polygon fill="black" stroke="black" points="220.86,-174.1 210.27,-174.18 218.6,-180.73 220.86,-174.1"/>
+</g>
+<!-- Pillow -->
+<g id="node3" class="node">
+<title>Pillow</title>
+<ellipse fill="none" stroke="black" cx="272.51" cy="-162" rx="36.26" ry="18"/>
+<text text-anchor="middle" x="272.51" y="-157.8" font-family="Times,serif" font-size="14.00">Pillow</text>
+</g>
+<!-- Matplotlib&#45;&gt;Pillow -->
+<g id="edge2" class="edge">
+<title>Matplotlib-&gt;Pillow</title>
+<path fill="none" stroke="black" d="M355.04,-215.52C339.44,-205.59 319.86,-193.13 303.69,-182.84"/>
+<polygon fill="black" stroke="black" points="305.72,-179.98 295.4,-177.57 301.96,-185.89 305.72,-179.98"/>
+</g>
+<!-- Kiwisolver -->
+<g id="node4" class="node">
+<title>Kiwisolver</title>
+<ellipse fill="none" stroke="black" cx="382.51" cy="-162" rx="55.56" ry="18"/>
+<text text-anchor="middle" x="382.51" y="-157.8" font-family="Times,serif" font-size="14.00">KiwiSolver</text>
+</g>
+<!-- Matplotlib&#45;&gt;Kiwisolver -->
+<g id="edge3" class="edge">
+<title>Matplotlib-&gt;Kiwisolver</title>
+<path fill="none" stroke="black" d="M382.51,-215.7C382.51,-208.41 382.51,-199.73 382.51,-191.54"/>
+<polygon fill="black" stroke="black" points="386.01,-191.62 382.51,-181.62 379.01,-191.62 386.01,-191.62"/>
+</g>
+<!-- Pyparsing -->
+<g id="node5" class="node">
+<title>Pyparsing</title>
+<ellipse fill="none" stroke="black" cx="506.51" cy="-162" rx="50.21" ry="18"/>
+<text text-anchor="middle" x="506.51" y="-157.8" font-family="Times,serif" font-size="14.00">PyParsing</text>
+</g>
+<!-- Matplotlib&#45;&gt;Pyparsing -->
+<g id="edge4" class="edge">
+<title>Matplotlib-&gt;Pyparsing</title>
+<path fill="none" stroke="black" d="M413.48,-215.52C430.83,-205.72 452.55,-193.46 470.64,-183.25"/>
+<polygon fill="black" stroke="black" points="472.23,-186.37 479.22,-178.41 468.79,-180.28 472.23,-186.37"/>
+</g>
+<!-- PythonDateutil -->
+<g id="node6" class="node">
+<title>PythonDateutil</title>
+<ellipse fill="none" stroke="black" cx="646.51" cy="-162" rx="71.93" ry="18"/>
+<text text-anchor="middle" x="646.51" y="-157.8" font-family="Times,serif" font-size="14.00">Python Dateutil</text>
+</g>
+<!-- Matplotlib&#45;&gt;PythonDateutil -->
+<g id="edge5" class="edge">
+<title>Matplotlib-&gt;PythonDateutil</title>
+<path fill="none" stroke="black" d="M420.33,-222.97C464.04,-211.38 536.47,-192.18 587.58,-178.63"/>
+<polygon fill="black" stroke="black" points="588.23,-182.07 597,-176.13 586.43,-175.31 588.23,-182.07"/>
+</g>
+<!-- Express -->
+<g id="node7" class="node">
+<title>Express</title>
+<polygon fill="none" stroke="black" points="412.67,-108 352.35,-108 352.35,-72 412.67,-72 412.67,-108"/>
+<text text-anchor="middle" x="382.51" y="-85.8" font-family="Times,serif" font-size="14.00">Express</text>
+</g>
+<!-- Kiwisolver&#45;&gt;Express -->
+<!-- BodyParser -->
+<g id="node8" class="node">
+<title>BodyParser</title>
+<ellipse fill="none" stroke="black" cx="58.51" cy="-18" rx="58.51" ry="18"/>
+<text text-anchor="middle" x="58.51" y="-13.8" font-family="Times,serif" font-size="14.00">Body Parser</text>
+</g>
+<!-- Express&#45;&gt;BodyParser -->
+<g id="edge6" class="edge">
+<title>Express-&gt;BodyParser</title>
+<path fill="none" stroke="black" d="M351.95,-83.16C303.7,-73.84 206.98,-54.73 125.51,-36 121.47,-35.07 117.3,-34.08 113.11,-33.07"/>
+<polygon fill="black" stroke="black" points="114.07,-29.7 103.52,-30.71 112.39,-36.5 114.07,-29.7"/>
+</g>
+<!-- Cookie -->
+<g id="node9" class="node">
+<title>Cookie</title>
+<ellipse fill="none" stroke="black" cx="173.51" cy="-18" rx="38.93" ry="18"/>
+<text text-anchor="middle" x="173.51" y="-13.8" font-family="Times,serif" font-size="14.00">Cookie</text>
+</g>
+<!-- Express&#45;&gt;Cookie -->
+<g id="edge7" class="edge">
+<title>Express-&gt;Cookie</title>
+<path fill="none" stroke="black" d="M351.88,-79.14C319.44,-68.65 266.76,-51.46 221.51,-36 219.17,-35.2 216.76,-34.37 214.33,-33.53"/>
+<polygon fill="black" stroke="black" points="215.71,-30.3 205.12,-30.3 213.4,-36.91 215.71,-30.3"/>
+</g>
+<!-- Debug -->
+<g id="node10" class="node">
+<title>Debug</title>
+<ellipse fill="none" stroke="black" cx="267.51" cy="-18" rx="36.78" ry="18"/>
+<text text-anchor="middle" x="267.51" y="-13.8" font-family="Times,serif" font-size="14.00">Debug</text>
+</g>
+<!-- Express&#45;&gt;Debug -->
+<g id="edge8" class="edge">
+<title>Express-&gt;Debug</title>
+<path fill="none" stroke="black" d="M353.79,-71.52C337.21,-61.43 316.34,-48.73 299.28,-38.34"/>
+<polygon fill="black" stroke="black" points="301.39,-35.53 291.03,-33.32 297.75,-41.51 301.39,-35.53"/>
+</g>
+<!-- Finalhandler -->
+<g id="node11" class="node">
+<title>Finalhandler</title>
+<ellipse fill="none" stroke="black" cx="382.51" cy="-18" rx="59.84" ry="18"/>
+<text text-anchor="middle" x="382.51" y="-13.8" font-family="Times,serif" font-size="14.00">Finalhandler</text>
+</g>
+<!-- Express&#45;&gt;Finalhandler -->
+<g id="edge9" class="edge">
+<title>Express-&gt;Finalhandler</title>
+<path fill="none" stroke="black" d="M382.51,-71.7C382.51,-64.41 382.51,-55.73 382.51,-47.54"/>
+<polygon fill="black" stroke="black" points="386.01,-47.62 382.51,-37.62 379.01,-47.62 386.01,-47.62"/>
+</g>
+<!-- Methods -->
+<g id="node12" class="node">
+<title>Methods</title>
+<ellipse fill="none" stroke="black" cx="505.51" cy="-18" rx="44.84" ry="18"/>
+<text text-anchor="middle" x="505.51" y="-13.8" font-family="Times,serif" font-size="14.00">Methods</text>
+</g>
+<!-- Express&#45;&gt;Methods -->
+<g id="edge10" class="edge">
+<title>Express-&gt;Methods</title>
+<path fill="none" stroke="black" d="M412.91,-71.7C430.36,-61.77 452.34,-49.26 470.5,-38.92"/>
+<polygon fill="black" stroke="black" points="472.14,-42.02 479.1,-34.03 468.68,-35.93 472.14,-42.02"/>
+</g>
+<!-- Parseurl -->
+<g id="node13" class="node">
+<title>Parseurl</title>
+<ellipse fill="none" stroke="black" cx="611.51" cy="-18" rx="42.68" ry="18"/>
+<text text-anchor="middle" x="611.51" y="-13.8" font-family="Times,serif" font-size="14.00">Parseurl</text>
+</g>
+<!-- Express&#45;&gt;Parseurl -->
+<g id="edge11" class="edge">
+<title>Express-&gt;Parseurl</title>
+<path fill="none" stroke="black" d="M412.96,-80.13C448.28,-69.79 508.24,-52.06 559.51,-36 562.21,-35.16 564.98,-34.28 567.77,-33.39"/>
+<polygon fill="black" stroke="black" points="568.65,-36.78 577.1,-30.38 566.51,-30.12 568.65,-36.78"/>
+</g>
+<!-- PathToRegexp -->
+<g id="node14" class="node">
+<title>PathToRegexp</title>
+<ellipse fill="none" stroke="black" cx="742.51" cy="-18" rx="70.04" ry="18"/>
+<text text-anchor="middle" x="742.51" y="-13.8" font-family="Times,serif" font-size="14.00">Path to Regexp</text>
+</g>
+<!-- Express&#45;&gt;PathToRegexp -->
+<g id="edge12" class="edge">
+<title>Express-&gt;PathToRegexp</title>
+<path fill="none" stroke="black" d="M412.91,-83.53C464.52,-74.18 572.51,-54.37 663.51,-36 668.74,-34.95 674.15,-33.83 679.58,-32.69"/>
+<polygon fill="black" stroke="black" points="680.16,-36.15 689.23,-30.66 678.72,-29.3 680.16,-36.15"/>
+</g>
+</g>
+</svg>
