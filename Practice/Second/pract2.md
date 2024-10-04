@@ -121,7 +121,7 @@ digraph G {
     Kiwisolver -> Express [style=invis];
 }
 ```
-![Alt text](https://raw.githubusercontent.com/volcat-qwe/Config-uprav/refs/heads/main/Practice/First/graphs.svg)
+![Alt text](https://raw.githubusercontent.com/volcat-qwe/Config-uprav/refs/heads/main/Practice/Second/Images/graphs.svg)
 ## Задание 4
 
 Следующие задачи можно решать с помощью инструментов на выбор:
@@ -168,9 +168,7 @@ Finished in 283msec.
 ## Задание 5
 
 Решить на MiniZinc задачу о зависимостях пакетов для рисунка, приведенного ниже.
-
-![alt text](https://raw.githubusercontent.com/true-grue/kisscm/blob/847fc05a9ef7131fd5e71a110aae510ecdd5ce37/pract/images/pubgrub.png)
-
+![image](https://github.com/user-attachments/assets/979b120b-1f78-4526-b9e3-25c248276d65)
 ## Решение
 ```
 set of int: MenuVersion = {100, 110, 120, 130, 150};
