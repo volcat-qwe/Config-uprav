@@ -1,0 +1,2 @@
+username,archive_path,log_file,startup_script,test_directory
+user1,restricted_directory\archive\qwe222.tar,dz1/session_log.csv,dz1/scripts/startup_script.txt,dz1/tests/

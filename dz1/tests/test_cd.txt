@@ -1,0 +1,4 @@
+cd archive
+cd -
+cd subdir
+cd -
