@@ -1,7 +1,7 @@
 ## Как установить
 
 ```
-git clone https://github.com/volcat-qwe/Config-uprav/dz1.git
+git clone https://github.com/volcat-qwe/Config-uprav.git
 cd dz1
 
 # Активируйте виртуальное окружение
