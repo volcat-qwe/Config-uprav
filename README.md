@@ -5,4 +5,5 @@ Practices
 4. [fourth practice](https://github.com/volcat-qwe/Config-uprav/blob/main/Practice/Pract4/Fourth.md)
 
 Homeworks
-1.[frist homework](https://github.com/volcat-qwe/Config-uprav/tree/main/dz1 )
+
+1. [frist homework](https://github.com/volcat-qwe/Config-uprav/tree/main/dz1)
