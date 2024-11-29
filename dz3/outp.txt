@@ -1,0 +1,10 @@
+TABLE(
+    COL1 => 42,
+    COL2 => ''Hello'',
+    COL3 => TEMP(
+    NESTED1 => 1,
+    NESTED2 => ''World'',
+),
+)
+CONST is 10;
+EXPR is 42;

@@ -1,0 +1,12 @@
+{
+    "TABLE": {
+        "COL1": 42,
+        "COL2": "'Hello'",
+        "COL3": {
+            "NESTED1": 1,
+            "NESTED2": "'World'"
+        }
+    },
+    "CONST": 10,
+    "EXPR": "?[CONST + 32]"
+}
