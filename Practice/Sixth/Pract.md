@@ -26,5 +26,6 @@ MakeFile![image](https://github.com/user-attachments/assets/beb9b3c1-4c55-4b1a-a
 
 Для запуска потребуются данные команды
 ![image](https://github.com/user-attachments/assets/813be595-6300-4b8b-a318-35f550ad8af1)
+make file.lst
 ![image](https://github.com/user-attachments/assets/c4def4e5-291f-48ba-bf52-6edf98f14867)
 ![image](https://github.com/user-attachments/assets/4dc24c8f-6293-47c0-bf19-df1f9459844f)
