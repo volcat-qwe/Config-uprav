@@ -14,24 +14,32 @@ def validate_name(name, is_top_level=True):
             raise ValueError(f"Некорректное имя: {name}")
 
 
-def process_json_data(data, is_top_level=True):
+def process_json_data(data, constants=None, is_top_level=True):
     """
     Рекурсивно обрабатывает данные, преобразуя все имена в верхний регистр.
     Также проверяет корректность имен с помощью validate_name.
     """
+    if constants is None:  # Инициализация словаря констант
+        constants = {}
+
     if isinstance(data, dict):
         result = {}
         for key, value in data.items():
             upper_key = key.upper()  # Преобразуем ключ в верхний регистр
             validate_name(upper_key, is_top_level)  # Проверяем имя на верхнем уровне
 
-            # Рекурсивно обрабатываем вложенные данные (с флагом is_top_level=False для вложенных словарей)
-            result[upper_key] = process_json_data(value, is_top_level=False)
+            # Если значение - это число, сохраняем его как константу
+            if isinstance(value, int) and is_top_level:
+                constants[upper_key] = value
+
+            # Рекурсивно обрабатываем вложенные данные
+            result[upper_key] = process_json_data(value, constants, is_top_level=False)
         return result
     elif isinstance(data, list):
-        return [process_json_data(item, is_top_level) for item in data]
+        return [process_json_data(item, constants, is_top_level) for item in data]
     else:
         return data  # Если значение не словарь или список, просто возвращаем его
+
 
 
 def process_expression(expression, constants):
@@ -60,31 +68,33 @@ def json_to_custom_language(data):
     constants = {}
     result = []
 
+
+    # Обработка констант
     for key, value in data.items():
         key = key.upper()  # Убедимся, что имя в верхнем регистре
         validate_name(key)  # Проверяем имя
 
+        if isinstance(value, int):
+            # Собираем константы
+            constants[key] = value
+            result.append(f"{key} is {value};")
+
+    # Обработка таблицы и вложенной структуры
+    for key, value in data.items():
         if isinstance(value, dict):
-            # Если значение — это словарь, обрабатываем его как таблицу
             table_result = f"{key}(\n"
             for sub_key, sub_value in value.items():
                 sub_key = sub_key.upper()
                 if isinstance(sub_value, int):
-                    table_result += f"    {sub_key} => {sub_value},\n"
+                    table_result += f"  {sub_key} => {sub_value},\n"
                 elif isinstance(sub_value, str):
-                    table_result += f"    {sub_key} => '{sub_value}',\n"
+                    # Обработка строк / выражений
+                    sub_value = process_expression(sub_value, constants)
+                    table_result += f"  {sub_key} => '{sub_value}',\n"
                 elif isinstance(sub_value, dict):
-                    table_result += f"    {sub_key} => {json_to_custom_language({'temp': sub_value})},\n"
+                    table_result += f"  {sub_key} => {json_to_custom_language({'temp': sub_value})},\n"
             table_result += ")"
             result.append(table_result)
-
-        elif isinstance(value, int):
-            constants[key] = value
-            result.append(f"{key} is {value};")
-
-        elif isinstance(value, str):
-            value = process_expression(value, constants)  # Обрабатываем выражения
-            result.append(f"{key} is {value};")
 
     return "\n".join(result)
 
