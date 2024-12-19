@@ -37,3 +37,8 @@ python3 visualizer.py --graphviz-path usr/bin/ --package curl --output curl.
 png --depth 2 --repo-url http://archive.ubuntu.com/
 ```
 На выходе получаем ![curl png](https://github.com/user-attachments/assets/e9ba4e3d-9867-48fb-8c6b-a55827b9b94a)
+
+# Запуск тестов
+```
+python3 -m unittest test_dependency_graph.py
+```
