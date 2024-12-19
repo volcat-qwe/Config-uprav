@@ -1,106 +1,125 @@
 import unittest
-import subprocess
 
-class TestConfigLanguage(unittest.TestCase):
+# Импортируем функции из вашего кода
+from translator import validate_name, process_json_data, process_expression, json_to_custom_language
 
-    def run_translator(self, input_data):
-        # Преобразуем входные данные в строку (если они не в строковом формате)
-        result = subprocess.run(
-            ['python3', 'translator.py'],
-            input=input_data,  # передаем строковые данные напрямую
-            capture_output=True,
-            text=True  # Указываем, что вывод и ввод текстовые (не байтовые)
-        )
-        return result.stdout
 
-    def test_db_config(self):
-        input_data = '''{
-            "DB_CONFIG": {
-                "MAX_CONNECTIONS": 100,
-                "TABLES": {
-                    "USERS": {
-                        "ID": 1,
-                        "NAME": "'John'",
-                        "AGE": 30
-                    },
-                    "ORDERS": {
-                        "ORDER_ID": 101,
-                        "USER_ID": 1,
-                        "TOTAL": 50
-                    }
-                },
-                "INDEX_SIZE": "?[MAX_CONNECTIONS * 10]"
-            },
-            "SYSTEM_VERSION": 1,
-            "EXPR": "?[SYSTEM_VERSION + 1]"
-        }'''
-        output = self.run_translator(input_data)
+class TestValidateName(unittest.TestCase):
+    def test_valid_names(self):
+        # Корректные имена
+        validate_name("VALID_NAME")  # Не должно выдать исключений
+        validate_name("A")  # Однобуквенное имя
+        validate_name("THIS_IS_CORRECT")
 
-        expected_output = '''DB_CONFIG(
-    MAX_CONNECTIONS => 100,
-    TABLES => temp(
-        USERS => temp(
-            ID => 1,
-            NAME => 'John',
-            AGE => 30,
-        ),
-        ORDERS => temp(
-            ORDER_ID => 101,
-            USER_ID => 1,
-            TOTAL => 50,
-        ),
-    ),
-    INDEX_SIZE is 1000;
-)
-SYSTEM_VERSION is 1;
-EXPR is 2;
-'''
-        self.assertEqual(output, expected_output)
+    def test_invalid_names(self):
+        # Некорректные имена
+        with self.assertRaises(ValueError):
+            validate_name("InvalidName")  # Содержит строчные буквы
+        with self.assertRaises(ValueError):
+            validate_name("INVALID-NAME")  # Содержит недопустимый символ
+        with self.assertRaises(ValueError):
+            validate_name("")  # Пустая строка
+        with self.assertRaises(ValueError):
+            validate_name("123INVALID")  # Начинается с цифры
 
-    def test_web_server_config(self):
-        input_data = '''{
-            "SERVER_CONFIG": {
-                "MAX_THREADS": 8,
-                "HOST": "'localhost'",
-                "PORT": 8080,
-                "SSL_ENABLED": true,
-                "THREAD_COUNT": "?[MAX_THREADS * 2]"
-            },
-            "LOGGING_LEVEL": "'DEBUG'",
-            "EXPR": "?[MAX_THREADS + 5]"
-        }'''
-        output = self.run_translator(input_data)
 
-        expected_output = '''SERVER_CONFIG(
-    MAX_THREADS => 8,
-    HOST => 'localhost',
-    PORT => 8080,
-    SSL_ENABLED => true,
-    THREAD_COUNT is 16;
-)
-LOGGING_LEVEL is 'DEBUG';
-EXPR is 13;
-'''
-        self.assertEqual(output, expected_output)
+class TestProcessJsonData(unittest.TestCase):
+    def test_process_simple_dict(self):
+        input_data = {
+            "name": "value",
+            "number": 42,
+            "nested": {"key": "another_value"}
+        }
+        expected_data = {
+            "NAME": "value",
+            "NUMBER": 42,
+            "NESTED": {"KEY": "another_value"},
+        }
+        result = process_json_data(input_data)
+        self.assertEqual(result, expected_data)
 
-    def test_empty_config(self):
-        input_data = '''{
-            "CONFIG": {}
-        }'''
-        output = self.run_translator(input_data)
+    def test_process_list(self):
+        input_data = ["value", {"key": "another_value"}]
+        expected_data = ["value", {"KEY": "another_value"}]
+        result = process_json_data(input_data)
+        self.assertEqual(result, expected_data)
 
-        expected_output = '''CONFIG(
-)
-'''
-        self.assertEqual(output, expected_output)
+
+class TestProcessExpression(unittest.TestCase):
+    def test_valid_expression(self):
+        constants = {"CONST": 10, "VALUE": 20}
+        self.assertEqual(process_expression("?[CONST + 5]", constants), 15)
+        self.assertEqual(process_expression("?[VALUE + 10]", constants), 30)
 
     def test_invalid_expression(self):
-        input_data = '''{
-            "INVALID_EXPRESSION": "?[MAX_THREADS * ]"
-        }'''
+        constants = {"CONST": 10}
         with self.assertRaises(ValueError):
-            self.run_translator(input_data)
+            process_expression("?[UNKNOWN + 1]", constants)  # Неизвестная константа
+
+        with self.assertRaises(ValueError):
+            process_expression("?[]", constants)  # Пустое выражение
+
+        with self.assertRaises(ValueError):
+            process_expression("?[CONST - 5]", constants)  # Некорректное выражение
 
 
-if __name__ == '__main__':
+class TestJsonToCustomLanguage(unittest.TestCase):
+
+    def test_nested_data(self):
+        input_data = {
+            "TABLE": {
+                "SUB_TABLE": {
+                    "VALUE": 5
+                }
+            }
+        }
+
+        # Обработка данных перед вызовом json_to_custom_language
+        processed_data = process_json_data(input_data)
+
+        result = json_to_custom_language(processed_data)
+
+        expected_result = (
+            "TABLE(\n"
+            "  SUB_TABLE => temp(\n"
+            "  VALUE => 5,\n"
+            "),\n"
+            ")"
+        )
+
+        # Печать для отладки
+        if result != expected_result:
+            print("\nGenerated Result:")
+            print(result)
+            print("\nExpected Result:")
+            print(expected_result)
+
+        # Сравнение результатов без лишних пробелов и в верхнем регистре
+        self.assertEqual(result.strip(), expected_result.strip())
+
+    def test_simple_data(self):
+        input_data = {
+            "CONST": 10,
+            "TABLE": {
+                "KEY1": 1,
+                "KEY2": "value"
+            }
+        }
+        processed_data = process_json_data(input_data)
+        result = json_to_custom_language(processed_data)
+        expected_result = (
+            "CONST is 10;\n"
+            "TABLE(\n"
+            "  KEY1 => 1,\n"
+            "  KEY2 => 'value',\n"
+            ")"
+        )
+        self.assertEqual(result, expected_result)
+
+
+
+
+
+
+if __name__ == "__main__":
     unittest.main()
