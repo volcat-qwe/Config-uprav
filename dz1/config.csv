@@ -1,4 +1,0 @@
-hostname,my_computer
-fs_path,virtual_fs.tar
-log_path,session_log.csv
-startup_script,startup_script.sh
