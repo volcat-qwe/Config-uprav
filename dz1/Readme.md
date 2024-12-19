@@ -1,11 +1,11 @@
-##Клонирование репозитория для запуска программы
+# Клонирование репозитория для запуска программы
 
 ```
 git clone https://github.com/volcat-qwe/Config-uprav.git
 cd Config-uprav
 ```
 
-##Установка зависимостей
+# Установка зависимостей
 ```
 # Активируйте виртуальное окружение
 python -m venv venv
@@ -15,11 +15,11 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-##Запуск эмулятора
+# Запуск эмулятора
 ```
 python3 main.py
 ```
-##Запуск тестов
+# Запуск тестов
 ```
 python3 -m unittest tests.py
 ```
