@@ -44,3 +44,125 @@ actor Преподаватель as Преподаватель
 ```
 ![image](https://github.com/user-attachments/assets/e41a2965-34fd-4a44-af90-82d7975b1d71)
 
+## Задание 3 
+Создадим файл с расширением .nw, назовем его quicksort.nw, содержащий следующий текст:
+```
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+% Title and author information
+\title{Алгоритм быстрой сортировки}
+\author{Черновасиленко Д.С.}
+\maketitle
+
+\section{Введение}
+Быстрая сортировка - это эффективный алгоритм сортировки, использующий принцип "разделяй и властвуй".
+
+\section{Алгоритм}
+\begin{itemize}
+    \item Выберите опорный элемент из массива.
+    \item Разделите массив на две части - элементы меньше опорного и больше опорного.
+    \item Рекурсивно примените алгоритм к подмассивам.
+\end{itemize}
+
+\section{Исходный код}
+\begin{verbatim}
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+\end{verbatim}
+\footnote{Разработал Черновасиленко Д.С.}
+
+\end{document}
+
+```
+Компиляций nw-файла в pdf-файл с использованием noweb: 
+```
+noweb quicksort.nw
+pdflatex quicksort.tex
+```
+
+Исходный код .py : 
+```
+def quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quicksort(left) + middle + quicksort(right)
+```
+
+## Задание 4
+
+main.py
+```
+"""
+Основной модуль приложения.
+"""
+
+from utils import add_numbers
+
+def main():
+    """Главная функция."""
+    result = add_numbers(5, 10)
+    print(f"Результат: {result}")
+
+if __name__ == "__main__":
+    main()
+```
+
+utils.py
+```
+"""
+Модуль утилит.
+"""
+
+def add_numbers(a, b):
+    """Сложить два числа."""
+    return a + b
+```
+Конфигурационный файл Doxygen
+```
+doxygen -g Doxyfile
+```
+В файле Doxyfile передадим следующие параметры
+```
+# Выберите путь к входным файлам
+INPUT = ./main.py ./utils.py
+
+# Установите язык
+PROJECT_LANGUAGES = Python
+
+# Установите имя проекта и авторство
+PROJECT_NAME = "Мой проект"
+PROJECT_BRIEF = "Это пример проекта."
+PROJECT_VERSION = "1.0"
+GENERATE_LATEX = YES
+LATEX_HEADER = Ваше_имя_Фамилия
+
+# Включите утилиты
+HAVE_DOT = YES
+```
+Генерируем документ
+```
+doxygen Doxyfile
+```
+```
+cd docs/latex
+make
+```
+Проверка на русские символы
+```
+# Кодировка документа
+USE_MDFILE_AS_MAINPAGE = YES
+```
+
+# Задание 5
