@@ -33,8 +33,8 @@ python3 vizualizer.py -h #просмотр необходимых флагов �
 ```
 Пример использования программы
 ```
-python3 visualizer.py --graphviz-path usr/bin/ --package curl --output curl.
-png --depth 2 --repo-url http://archive.ubuntu.com/
+python3 dependencies.py --package pa
+ckageA --output qwe  --depth 3
 ```
 На выходе получаем ![qwe](https://github.com/user-attachments/assets/8169eb6b-53ad-46e1-95a7-22f3156dc486)
 
