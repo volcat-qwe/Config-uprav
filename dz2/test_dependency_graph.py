@@ -1,89 +1,105 @@
 import unittest
+from unittest.mock import patch, MagicMock
+from visualizer import get_dependencies, create_graph
 from graphviz import Digraph
 
-# Импортируем тестируемые функции
-# from ваш_скрипт import mock_get_dependencies, get_dependencies, create_graph
 
-def mock_get_dependencies(package_name):
-    """Имитация получения зависимостей (для тестов)."""
-    mock_dependencies = {
-        "packageA": ["packageB", "packageC"],
-        "packageB": ["packageD"],
-        "packageC": [],
-        "packageD": ["packageE"],
-        "packageE": []
-    }
-    return mock_dependencies.get(package_name, [])
+class TestDependencyGraph(unittest.TestCase):
+    @patch('subprocess.run')
+    def test_get_dependencies(self, mock_subprocess_run):
+        """
+        Тестирует функцию get_dependencies для корректного построения зависимостей.
+        """
+        # Настраиваем mock для команды apt-cache depends
+        mock_subprocess_run.side_effect = [
+            MagicMock(stdout="Depends: libexample1\nDepends: libexample2\n", returncode=0),  # Для testpkg
+            MagicMock(stdout="Depends: libexample2\n", returncode=0),  # Для libexample1
+            MagicMock(stdout="", returncode=0)  # Для libexample2
+        ]
 
-def get_dependencies(package_name, depth):
-    """Получение зависимостей пакета с учётом глубины."""
-    dependencies = {}
-    queue = [(package_name, 0)]
-    visited = set()
+        package_name = "testpkg"
+        depth = 2
+        repo_url = "http://example.com"
 
-    while queue:
-        pkg, level = queue.pop(0)
-
-        if pkg in visited or level >= depth:
-            continue
-
-        visited.add(pkg)
-        deps = mock_get_dependencies(pkg)
-        dependencies[pkg] = deps
-        queue.extend((dep, level + 1) for dep in deps)
-
-    return dependencies
-
-def create_graph(dependencies):
-    """Создание графа зависимостей в формате Graphviz."""
-    dot = Digraph(format='png')
-    for pkg, deps in dependencies.items():
-        for dep in deps:
-            dot.edge(pkg, dep)
-    return dot
-
-
-class TestDependencyFunctions(unittest.TestCase):
-
-    def test_mock_get_dependencies(self):
-        """Тестирование mock_get_dependencies."""
-        self.assertEqual(mock_get_dependencies("packageA"), ["packageB", "packageC"])
-        self.assertEqual(mock_get_dependencies("packageB"), ["packageD"])
-        self.assertEqual(mock_get_dependencies("packageC"), [])
-        self.assertEqual(mock_get_dependencies("nonexistent"), [])
-
-    def test_get_dependencies(self):
-        """Тестирование get_dependencies."""
-        expected = {
-            "packageA": ["packageB", "packageC"],
-            "packageB": ["packageD"],
-            "packageD": ["packageE"],
-            "packageC": []
+        # Ожидаемый результат
+        expected_dependencies = {
+            "testpkg": ["libexample1", "libexample2"],
+            "libexample1": ["libexample2"],
+            "libexample2": []
         }
-        result = get_dependencies("packageA", 3)
-        self.assertEqual(result, expected)
 
-        # Проверка глубины
-        result_depth_1 = get_dependencies("packageA", 1)
-        expected_depth_1 = {
-            "packageA": ["packageB", "packageC"],
+        # Выполнение функции
+        result = get_dependencies(package_name, depth, repo_url)
+
+        # Проверка результата
+        self.assertEqual(result, expected_dependencies)
+
+    @patch('subprocess.run')
+    def test_get_dependencies_with_error(self, mock_subprocess_run):
+        """
+        Тестирует функцию get_dependencies для обработки ошибок.
+        """
+        # Настраиваем mock для команды apt-cache depends, чтобы вызывать ошибку
+        mock_subprocess_run.return_value = MagicMock(stdout="", stderr="Package not found", returncode=1)
+
+        package_name = "nonexistentpkg"
+        depth = 1
+        repo_url = "http://example.com"
+
+        # Ожидаемый результат
+        expected_dependencies = {
+            "nonexistentpkg": []
         }
-        self.assertEqual(result_depth_1, expected_depth_1)
+
+        # Выполнение функции
+        result = get_dependencies(package_name, depth, repo_url)
+
+        # Проверка результата
+        self.assertEqual(result, expected_dependencies)
 
     def test_create_graph(self):
-        """Тестирование create_graph."""
+        """
+        Тестирует функцию create_graph для корректного построения графа.
+        """
+        # Входные данные: зависимости
         dependencies = {
-            "packageA": ["packageB", "packageC"],
-            "packageB": ["packageD"],
-            "packageD": ["packageE"],
+            "testpkg": ["libexample1", "libexample2"],
+            "libexample1": ["libexample2"],
+            "libexample2": []
         }
-        
+
+        # Создание графа
         graph = create_graph(dependencies)
 
-        # Проверка рёбер в графе
-        edges = ['packageA -> packageB', 'packageA -> packageC', 'packageB -> packageD', 'packageD -> packageE']
-        for edge in edges:
-            self.assertIn(edge, "".join(graph.body))
+        # Проверка типа
+        self.assertIsInstance(graph, Digraph)
+
+        # Проверяем, что граф содержит корректные рёбра
+        expected_edges = [
+            "testpkg -> libexample1",
+            "testpkg -> libexample2",
+            "libexample1 -> libexample2",
+        ]
+        # Сравниваем строки из DOT-формата
+        for edge in expected_edges:
+            self.assertIn(edge, graph.source)
+
+    def test_create_graph_empty(self):
+        """
+        Тестирует функцию create_graph с пустыми зависимостями.
+        """
+        # Входные данные: пустые зависимости
+        dependencies = {}
+
+        # Создание графа
+        graph = create_graph(dependencies)
+
+        # Проверка типа
+        self.assertIsInstance(graph, Digraph)
+
+        # Проверка, что граф пустой (нет рёбер)
+        self.assertNotIn("->", graph.source)
+
 
 if __name__ == "__main__":
     unittest.main()
