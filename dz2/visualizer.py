@@ -1,20 +1,10 @@
+import subprocess
 import argparse
 import os
 from graphviz import Digraph
 
-# Имитация получения зависимостей
-def mock_get_dependencies(package_name):
-    # Пример зависимостей, которые могли бы быть получены из репозитория
-    mock_dependencies = {
-        "packageA": ["packageB", "packageC"],
-        "packageB": ["packageD"],
-        "packageC": [],
-        "packageD": ["packageE"],
-        "packageE": []
-    }
-    return mock_dependencies.get(package_name, [])
 
-def get_dependencies(package_name, depth):
+def get_dependencies(package_name, depth, repo_url):
     """
     Получение зависимостей пакета с учетом указанной глубины.
     """
@@ -24,19 +14,30 @@ def get_dependencies(package_name, depth):
 
     while queue:
         pkg, level = queue.pop(0)
-
         if pkg in visited or level >= depth:
             continue
-
         visited.add(pkg)
-
-        # Имитация получения зависимостей вместо вызова subprocess
-        deps = mock_get_dependencies(pkg)
-        dependencies[pkg] = deps
-
-        queue.extend((dep, level + 1) for dep in deps)
-
+        try:
+            result = subprocess.run(
+                ["apt-cache", "depends", pkg],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            output = result.stdout
+            deps = []
+            for line in output.splitlines():
+                if line.strip().startswith("Depends:"):
+                    dep = line.split(":")[1].strip()
+                    if dep not in visited:  # Добавляем только те, которые ещё не обработаны
+                        deps.append(dep)
+            dependencies[pkg] = deps  # Добавляем зависимости только для текущего пакета
+            queue.extend((dep, level + 1) for dep in deps)
+        except Exception as e:
+            print(f"Ошибка при обработке пакета {pkg}: {e}")
+            continue
     return dependencies
+
 
 def create_graph(dependencies):
     """
@@ -48,15 +49,22 @@ def create_graph(dependencies):
             dot.edge(pkg, dep)
     return dot
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Визуализация графа зависимостей пакета.")
+    parser = argparse.ArgumentParser(description="Визуализация графа зависимостей Ubuntu пакета.")
+    parser.add_argument("--graphviz-path", required=True, help="Путь к программе Graphviz.")
     parser.add_argument("--package", required=True, help="Имя анализируемого пакета.")
     parser.add_argument("--output", required=True, help="Путь к файлу для сохранения графа.")
     parser.add_argument("--depth", type=int, default=3, help="Максимальная глубина анализа зависимостей.")
+    parser.add_argument("--repo-url", required=True, help="URL-адрес репозитория.")
+
     args = parser.parse_args()
 
+    # Установим PATH, добавляя путь к Graphviz
+    os.environ["PATH"] = os.environ.get("PATH", "") + os.pathsep + args.graphviz_path
+
     # Получение зависимостей
-    dependencies = get_dependencies(args.package, args.depth)
+    dependencies = get_dependencies(args.package, args.depth, args.repo_url)
 
     # Создание графа
     graph = create_graph(dependencies)
@@ -66,6 +74,7 @@ def main():
     graph.render(output_path, cleanup=True)
 
     print(f"Граф зависимостей успешно сохранен в {output_path}.png")
+
 
 if __name__ == "__main__":
     main()
