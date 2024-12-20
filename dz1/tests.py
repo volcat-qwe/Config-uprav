@@ -63,16 +63,16 @@ class TestShellEmulator(unittest.TestCase):
 
         # Копирование файла внутри той же директории
         shell.do_cp("file1.txt file1_copy.txt")
-        mock_print.assert_called_with("Ошибка при копировании: [Errno 2] No such file or directory: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
+        mock_print.assert_called_with("Ошибка при копировании: [WinError 2] Не удается найти указанный файл: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
 
         # Копирование файла в другую директорию
         shell.do_cp("file1.txt /otherdir/file1_copy.txt")
-        mock_print.assert_called_with("Ошибка при копировании: [Errno 2] No such file or directory: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
+        mock_print.assert_called_with("Ошибка при копировании: [WinError 2] Не удается найти указанный файл: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
 
         # Проверка ошибки при копировании несуществующего файла
         shell._path_exists = MagicMock(return_value=False)
         shell.do_cp("nonexistent.txt file_copy.txt")
-        mock_print.assert_called_with("Ошибка при копировании: [Errno 2] No such file or directory: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
+        mock_print.assert_called_with("Ошибка при копировании: [WinError 2] Не удается найти указанный файл: 'virtual_fs.tar.temp' -> 'virtual_fs.tar'")
 
     @patch('builtins.print')
     def test_exit(self, mock_print):
