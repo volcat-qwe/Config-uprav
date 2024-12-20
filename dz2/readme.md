@@ -36,7 +36,8 @@ python3 vizualizer.py -h #просмотр необходимых флагов �
 python3 visualizer.py --graphviz-path usr/bin/ --package curl --output curl.
 png --depth 2 --repo-url http://archive.ubuntu.com/
 ```
-На выходе получаем ![curl png](https://github.com/user-attachments/assets/e9ba4e3d-9867-48fb-8c6b-a55827b9b94a)
+На выходе получаем ![qwe](https://github.com/user-attachments/assets/8169eb6b-53ad-46e1-95a7-22f3156dc486)
+
 
 # Запуск тестов
 ```
